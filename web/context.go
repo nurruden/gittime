@@ -9,10 +9,11 @@ import (
 )
 
 type Context struct {
-	Req         *http.Request
-	Resp        http.ResponseWriter
-	PathParams  map[string]string
-	queryValues url.Values
+	Req          *http.Request
+	Resp         http.ResponseWriter
+	PathParams   map[string]string
+	queryValues  url.Values
+	MatchedRoute string
 }
 
 func (c *Context) RespJSONOK(val any) error {

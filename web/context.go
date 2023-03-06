@@ -9,11 +9,14 @@ import (
 )
 
 type Context struct {
-	Req          *http.Request
-	Resp         http.ResponseWriter
-	PathParams   map[string]string
-	queryValues  url.Values
-	MatchedRoute string
+	Req  *http.Request
+	Resp http.ResponseWriter
+	//Ctx          context.Context
+	RespData       []byte
+	RespStatusCode int
+	PathParams     map[string]string
+	queryValues    url.Values
+	MatchedRoute   string
 }
 
 func (c *Context) RespJSONOK(val any) error {
@@ -29,14 +32,16 @@ func (c *Context) RespJSON(status int, val any) error {
 	if err != nil {
 		return err
 	}
-	c.Resp.WriteHeader(status)
-	c.Resp.Header().Set("Content-Type", "application/json")
-	c.Resp.Header().Set("Content-Length", strconv.Itoa(len(data)))
-	n, err := c.Resp.Write(data)
-	if n != len(data) {
-		return errors.New("web: did not write all data")
-	}
-	return err
+	//c.Resp.WriteHeader(status)
+	//c.Resp.Header().Set("Content-Type", "application/json")
+	//c.Resp.Header().Set("Content-Length", strconv.Itoa(len(data)))
+	//n, err := c.Resp.Write(data)
+	//if n != len(data) {
+	//	return errors.New("web: did not write all data")
+	//}
+	c.RespData = data
+	c.RespStatusCode = status
+	return nil
 }
 
 func (c *Context) BindJSON(val any) error {
